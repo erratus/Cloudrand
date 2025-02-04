@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FileRepository extends JpaRepository<File, Long> {
     List<File> findByUser(User user);
+    List<File> findByFileIdOrderByVersionAsc(Long fileId);
 }

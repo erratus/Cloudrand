@@ -1,6 +1,8 @@
 package com.cloudrand.arcapi.api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,22 +13,28 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userId")
     private Long userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "username",nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "password",nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role = Role.USER; 
+    @Column(name = "role",nullable = false)
+    private Role role = Role.USER;
 
+    @Column(name = "phone",nullable = false, unique = true)
     private String phone;
+
+    @Column(name = "profilePicture",nullable = false)
     private String profilePicture;
 }
 

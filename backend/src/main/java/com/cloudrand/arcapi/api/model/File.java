@@ -10,18 +10,25 @@ import lombok.*;
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fileId")
     private Long fileId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    private String fileName;
-    private String filePath;
-    private Long fileSize;
-
     @ManyToOne
-    @JoinColumn(name = "folder_id", nullable = true)
+    @JoinColumn(name = "folderId", nullable = true)
     private Folder folder;
+
+    @Column(name = "fileName", nullable = false)
+    private String fileName;
+    @Column(name = "filePath",nullable = false)
+    private String filePath;
+    @Column(name = "fileSize")
+    private Long fileSize;
+    @Column(name = "version")
+    private Integer version; // Add a version field
+
 }
 

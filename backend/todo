@@ -1,0 +1,33 @@
+#backend todo
+
+take input of password confirmation in /users/register route
+
+routes todo
+
+🟢 User Routes
+Route Method Description
+/users/register POST Register a new user (with password confirmation)
+/users/login POST Authenticate user & return JWT token
+/users/logout POST Logout user & invalidate token
+/users/updatedetails PUT Update user details (email, phone, etc.)
+/users/deleteme DELETE Soft delete or remove user account
+/users/forgot-password POST Initiate password reset (send OTP/email link)
+/users/reset-password POST Reset password using OTP/link
+/users/resend-otp POST Resend OTP for verification
+/users/verify-otp POST Verify OTP for account recovery or activation
+🟠 Admin Routes
+Route Method Description
+/admin/users GET Get all users
+/admin/users/{id} GET Get user by ID
+/admin/users/create POST Create a new user (admin control)
+/admin/users/update/{id} PUT Update any user’s details
+/admin/users/delete/{id} DELETE Delete any user
+🔵 File Routes
+Route Method Description
+/files/upload POST Upload a file
+/files/download/{id} GET Download file by ID
+/files/delete/{id} DELETE Delete file
+/files/share/{id} POST Share file via link
+/files/version/{id} GET Get file version history
+/files/update/{id} PUT Update file metadata
+/files/list GET List all files of user
