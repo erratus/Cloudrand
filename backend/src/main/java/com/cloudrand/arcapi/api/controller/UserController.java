@@ -1,62 +1,37 @@
 package com.cloudrand.arcapi.api.controller;
 
-import com.cloudrand.arcapi.api.model.AuthenticationResponse;
 import com.cloudrand.arcapi.api.model.User;
 import com.cloudrand.arcapi.api.model.Role;
-import com.cloudrand.arcapi.jwt.JwtUtil;
 import com.cloudrand.arcapi.service.UserService;
-import com.cloudrand.arcapi.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
+
     private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> registerUser( @Valid  @RequestBody User user , @RequestParam String confirmPassword) {
-
-        if (user.getPassword() == null || !user.getPassword().equals(confirmPassword)) {
-            AuthenticationResponse authenticationResponse =new AuthenticationResponse("Passwords do not match!");
-            return ResponseEntity.badRequest().body(authenticationResponse);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody User user, @RequestParam String confirmPassword) {
+        if (!user.getPassword().equals(confirmPassword)) {
+            return ResponseEntity.badRequest().body("Passwords do not match!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER); // Default role
-        return ResponseEntity.ok(userService.register(user));
+        return ResponseEntity.ok(userService.createUser(user));
     }
-    
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> loginUserByUsername( @RequestParam String username,@RequestParam String password ) {
-        try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            UserDetails userDetails =userDetailsService.loadUserByUsername(username);
-            return  ResponseEntity.ok(userService.authenticate(userDetails));
-        }
-        catch (Exception e) {
-            log.error("Exception occurred while createAuthenticationToken",e);
-            AuthenticationResponse authenticationResponse =new AuthenticationResponse("Incorrect login credentials");
-            return ResponseEntity.badRequest().body(authenticationResponse);
-        }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
+        return userService.authenticateUser(email, password);
     }
 
     @PostMapping("/logout")
@@ -94,4 +69,3 @@ public class UserController {
         return userService.verifyOTP(email, otp);
     }
 }
-

@@ -1,7 +1,7 @@
 package com.cloudrand.arcapi.api.controller;
 
-import com.cloudrand.arcapi.service.UserService;
 import com.cloudrand.arcapi.api.model.User;
+import com.cloudrand.arcapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
